@@ -1,0 +1,26 @@
+Input: 
+N - mini-batch size for stochastic GD
+U - Target Q function update frequency
+
+Initialize:
+M - Empty Replay Memory Buffer 
+Q_1 - action value Q function (main)
+Q_2 - action value Q function (target)
+
+Repeat:
+
+Take action a_t according to epsilon-greedy policy
+Observe r_{t+1}, s_{t+1}
+Store s_t, a_t, r_{t+1}, s_{t+1} into M
+Sample N number of transition from experience
+loss = 0
+For i = 1 ... N:
+	current_i = Q_1{s_t, a_t}
+	if experience is terminal:
+		target_i = r_{t+1}
+	else:
+		target_i = r_{t+1} + \gamma max Q_2(s_t, :}
+	loss += (current_i - target_i)^2
+Update Q_1 using gradient descent from loss.
+IF this is the U'th step:
+	Set Q_2 = Q_1
